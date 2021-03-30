@@ -1,11 +1,59 @@
 class BankAccount:
-  pass
+  def __init__(self):
+    self.balance = 0
+    self.interest_rate = .02
+  
+  # Class instance methods
+  def deposit(self, amount):
+    # return False if amount if less than 0
+    if amount < 0: return False
+    # add the amount to the current balance
+    self.balance += amount
+    # return the new balance
+    return self.balance
+  
+  def withdraw(self, amount):
+    # return False if amount if less than 0
+    if amount < 0: return False
+    # subract the amount from the current balance
+    self.balance -= amount 
+    # return the new balance
+    return self.balance
 
-class ChildrensAccount:
-  pass
+  def accumulate_interest(self):
+    # multipy the balance by the interest_rate and sum them
+    self.balance += self.balance * self.interest_rate
+    # return the new balance
+    return self.balance
 
-class OverdraftAccount:
-  pass
+class ChildrensAccount(BankAccount):
+  # method override of parent method
+  def accumulate_interest(self):
+    # add ten dollars to balance 
+    self.balance += 10
+    # return the balance
+    return self.balance
+
+class OverdraftAccount(BankAccount):
+  # still method override
+  def __init__(self):
+    self.overdraft_penalty = 40
+    # addd everything from parents __init__
+    super().__init__()
+
+  # override the withdraw method
+  def withdraw(self, amount):
+    # if the balance is below 0 deduct a fee and return false
+    result = self.balance - amount
+
+    if result < 0:
+      self.balance -= self.overdraft_penalty
+      return False
+    
+    # invoke the parents withdraw method
+    super().withdraw(amount)
+
+  # ovveriride the accumulate_interest method
 
 try:
   basic_account = BankAccount()
